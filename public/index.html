@@ -140,6 +140,12 @@
       will-change: transform;
       pointer-events: auto;
       cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+    }
+
+    .morph-logo.loaded {
+      opacity: 1;
     }
 
     .morph-logo svg {
@@ -830,6 +836,9 @@
   <script>
     /* ── Morphing Logo: scroll-driven animation ── */
     const logo = document.getElementById('morphLogo');
+    requestAnimationFrame(() => {
+      logo.classList.add('loaded');
+    });
     const hero = document.querySelector('.hero');
     const nav = document.getElementById('nav');
     const langToggle = document.getElementById('langToggle');
