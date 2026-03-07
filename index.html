@@ -47,10 +47,10 @@
       top: 0;
       left: 0;
       right: 0;
-      z-index: 100;
+      z-index: 160;
       display: flex;
       align-items: center;
-      justify-content: flex-end;
+      justify-content: space-between;
       gap: 24px;
       padding: 14px 40px;
       transition: background 0.4s ease;
@@ -77,10 +77,22 @@
       width: 20px;
       height: 1.5px;
       background: #fff;
-      transition: background 0.3s ease;
+      transition: background 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
+      transform-origin: center;
     }
 
     .hamburger.dark span { background: #1d1d1b; }
+
+    .hamburger.active span:nth-child(1) {
+      transform: translateY(6.5px) rotate(45deg);
+    }
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+    .hamburger.active span:nth-child(3) {
+      transform: translateY(-6.5px) rotate(-45deg);
+    }
+
 
     /* ── Language Toggle ── */
     .lang-toggle {
@@ -122,7 +134,7 @@
     /* ── Morphing Logo ── */
     .morph-logo {
       position: fixed;
-      z-index: 101;
+      z-index: 161;
       will-change: transform;
       pointer-events: auto;
       cursor: pointer;
@@ -281,40 +293,34 @@
     }
 
     .project-card {
-      padding: 32px 0;
+      padding: 40px 0;
       border-bottom: 1px solid #e0e0e0;
+    }
+
+    .project-card-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 24px;
     }
 
     .project-title {
       font-size: 1.5rem;
       font-weight: 400;
-      text-align: right;
       letter-spacing: 0.01em;
     }
 
     .project-type {
-      font-size: 0.85rem;
-      text-align: right;
+      font-size: 0.8rem;
       color: #666;
-      margin-top: 4px;
-    }
-
-    .project-synopsis {
-      text-align: center;
-      font-size: 0.9rem;
-      color: #999;
-      margin: 24px 0;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
     }
 
     .project-credits {
       display: flex;
-      justify-content: center;
-      gap: 64px;
-      margin-top: 32px;
-    }
-
-    .credit-block {
-      text-align: left;
+      gap: 48px;
     }
 
     .credit-label {
@@ -402,16 +408,23 @@
 
     /* ── Impressum Overlay ── */
     .overlay {
-      display: none;
       position: fixed;
       inset: 0;
       z-index: 200;
       background: #fff;
       overflow-y: auto;
       padding: 100px 40px 60px;
+      transform: translateX(100%);
+      opacity: 0;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+      pointer-events: none;
     }
 
-    .overlay.active { display: block; }
+    .overlay.active {
+      transform: translateX(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
 
     .overlay-close {
       position: fixed;
@@ -446,44 +459,40 @@
       margin-bottom: 20px;
     }
 
-    /* ── Mobile Menu Overlay ── */
+    /* ── Menu Panel ── */
     .menu-overlay {
-      display: none;
       position: fixed;
-      inset: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
       z-index: 150;
-      background: #000;
+      background: #1d1d1b;
+      padding: 100px 48px 48px;
+      display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 32px;
+      gap: 24px;
+      transform: translateX(100%);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      min-width: 280px;
     }
 
-    .menu-overlay.active { display: flex; }
+    .menu-overlay.active {
+      transform: translateX(0);
+    }
 
     .menu-overlay a {
       font-family: 'Glacial Indifference', sans-serif;
-      font-size: 1.3rem;
-      color: #fff;
+      font-size: 1rem;
+      color: rgba(255,255,255,0.85);
       text-decoration: none;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      transition: opacity 0.2s ease;
+      transition: color 0.2s ease;
     }
 
-    .menu-overlay a:hover { opacity: 0.6; }
+    .menu-overlay a:hover { color: #fff; }
 
-    .menu-close {
-      position: absolute;
-      top: 24px;
-      right: 40px;
-      background: none;
-      border: none;
-      color: #fff;
-      font-size: 1.5rem;
-      cursor: pointer;
-      font-family: 'Glacial Indifference', sans-serif;
-    }
+    .menu-close { display: none; }
 
     /* ── Fade-in animation ── */
     .fade-in {
@@ -499,6 +508,11 @@
 
     /* ── Responsive ── */
     @media (max-width: 768px) {
+      .menu-overlay {
+        left: 0;
+        min-width: unset;
+        padding: 100px 40px 40px;
+      }
       .nav { padding: 20px 24px; }
       .content { padding: 0 24px; }
       .mission { padding: 80px 0 60px; }
@@ -620,9 +634,10 @@
       <div class="projects-divider"></div>
 
       <div class="project-card fade-in" data-lang="en">
-        <div class="project-title">Blue Zone</div>
-        <div class="project-type">Short Film</div>
-        <div class="project-synopsis">...</div>
+        <div class="project-card-header">
+          <div class="project-title">Blue Zone</div>
+          <div class="project-type">Short Film</div>
+        </div>
         <div class="project-credits">
           <div class="credit-block">
             <div class="credit-label">Directed by</div>
@@ -630,22 +645,23 @@
           </div>
           <div class="credit-block">
             <div class="credit-label">Written by</div>
-            <div class="credit-name">T&uuml;nde Sautier</div>
+            <div class="credit-name">T&uuml;nde Sautier &amp; David Hacke</div>
           </div>
         </div>
       </div>
       <div class="project-card fade-in" data-lang="de">
-        <div class="project-title">Blaue Zone</div>
-        <div class="project-type">Kurzfilm</div>
-        <div class="project-synopsis">...</div>
+        <div class="project-card-header">
+          <div class="project-title">Blaue Zone</div>
+          <div class="project-type">Kurzfilm</div>
+        </div>
         <div class="project-credits">
           <div class="credit-block">
-            <div class="credit-label">Regie von</div>
+            <div class="credit-label">Regie</div>
             <div class="credit-name">David Hacke</div>
           </div>
           <div class="credit-block">
-            <div class="credit-label">Drehbuch von</div>
-            <div class="credit-name">T&uuml;nde Sautier</div>
+            <div class="credit-label">Drehbuch</div>
+            <div class="credit-name">T&uuml;nde Sautier &amp; David Hacke</div>
           </div>
         </div>
       </div>
@@ -871,13 +887,22 @@
     /* ── Mobile Menu ── */
     const menuOverlay = document.getElementById('menuOverlay');
     document.getElementById('menuToggle').addEventListener('click', () => {
-      menuOverlay.classList.add('active');
+      const isOpen = menuOverlay.classList.toggle('active');
+      hamburger.classList.toggle('active', isOpen);
     });
-    document.getElementById('menuClose').addEventListener('click', closeMenu);
 
     function closeMenu() {
       menuOverlay.classList.remove('active');
+      hamburger.classList.remove('active');
     }
+
+    document.addEventListener('click', (e) => {
+      if (menuOverlay.classList.contains('active') &&
+          !menuOverlay.contains(e.target) &&
+          !hamburger.contains(e.target)) {
+        closeMenu();
+      }
+    });
 
     /* ── Overlays ── */
     function openOverlay(id) {
